@@ -1,26 +1,16 @@
-import React, { Suspense, useState } from 'react';
-import { Route, Router, Routes } from 'react-router-dom';
+import React, {Suspense} from 'react';
+import {Link, Route, Routes} from 'react-router-dom';
 import './styles/index.scss';
-import { Counter } from './components/Counter';
-import AboutPage from './pages/AboutPage/AboutPage';
-import MainPage from './pages/MainPage/MainPage';
-import { Link } from 'react-router-dom';
-import { AboutPageAsync } from './pages/AboutPage/AboutPage.async';
-import { MainPageAsync } from './pages/MainPage/MainPage.async';
-
-export enum Theme {
-    LIDHT = "light",
-    DARK = "dark",
-}
+import {AboutPageAsync} from "./pages/AboutPage/AboutPage.async";
+import {MainPageAsync} from "./pages/MainPage/MainPage.async";
+import {useTheme} from "./theme/useTheme";
 
 const App = () => {
-    const [theme, settTheme] = useState(Theme.LIDHT);
+    const {theme, toggleTheme} = useTheme();
 
-    const toggleTheme = () => {
-        settTheme(theme === Theme.DARK ? Theme.LIDHT : Theme.DARK);
-    }
     return (
-        <div className='app'>
+        <div className={`app ${theme}`}>
+            <button onClick={toggleTheme}>TOGGLE</button>
             <Link to={'/'}>Главная</Link>
             <Link to={'/about'}>О сайте</Link>
             <Suspense fallback={<div>Loading...</div>}>
@@ -29,7 +19,6 @@ const App = () => {
                     <Route path={'/'} element={<MainPageAsync />} />
                 </Routes>
             </Suspense>
-
         </div>
     );
 };
